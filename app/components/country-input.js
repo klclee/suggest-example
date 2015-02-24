@@ -10,14 +10,20 @@ export default Ember.Component.extend(Suggest, SuggestExtra,{
   },
   searchCountry: function(){
     var _scope = this;
-    var found = Countries.findBy('display', this.inputVal);
-    this.set('suggestions',[found]);
+    // var found = Countries.findBy('display', this.inputVal);
+    var found = Countries.filter(function(item){
+      if(item.get('display').toLowerCase().indexOf(this.inputVal.toLowerCase()) > -1){
+        return item;
+      }
+    }, this);
+    this.set('suggestions',found);
     this.set('suggestStyles', _scope.get('suggestStylesOn'));
 
   },
   actions: {
-    selectCity: function(item){
-      this.set('selectedVal', item.get('name'));
+    selectedCountry: function(item){
+
+      this.set('selectedVal', item.get('display'));
     }
   }
 });
